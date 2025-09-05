@@ -1,0 +1,5 @@
+streamlit
+emoji
+pandas
+numpy
+plotly
