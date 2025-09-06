@@ -45,6 +45,315 @@ def load_data(path: Path):
     return df
 
 
+def get_tier_boundaries(df: pd.DataFrame):
+    """Calculate min/max boundaries for each rarity tier"""
+    boundaries = {}
+    for tier in df["rarity"].unique():
+        tier_data = df[df["rarity"] == tier]["fish"]
+        if not tier_data.empty:
+            boundaries[tier] = {
+                "min": int(tier_data.min()),
+                "max": int(tier_data.max()),
+                "count": len(tier_data),
+                "avg": float(tier_data.mean()),
+                "total": int(tier_data.sum())
+            }
+    return boundaries
+
+
+def create_tier_panels(df: pd.DataFrame):
+    """Create detailed panels for each tier"""
+    st.markdown("## 🎯 Tier Analysis Panels")
+    
+    boundaries = get_tier_boundaries(df)
+    
+    # Display boundaries summary first
+    st.markdown("### 📊 Tier Boundaries Overview")
+    boundaries_data = []
+    for tier, stats in boundaries.items():
+        boundaries_data.append({
+            "Tier": tier,
+            "Min Fish": stats["min"],
+            "Max Fish": stats["max"],
+            "Total Catches": stats["count"],
+            "Total Fish": stats["total"],
+            "Avg per Catch": f"{stats['avg']:.1f}"
+        })
+    
+    boundaries_df = pd.DataFrame(boundaries_data).sort_values("Min Fish")
+    st.table(boundaries_df)
+    
+    # Create tabs for each tier
+    tier_tabs = st.tabs([f"{tier} ({boundaries[tier]['count']} catches)" for tier in sorted(boundaries.keys(), key=lambda x: boundaries[x]["min"])])
+    
+    for i, tier in enumerate(sorted(boundaries.keys(), key=lambda x: boundaries[x]["min"])):
+        with tier_tabs[i]:
+            tier_data = df[df["rarity"] == tier].copy()
+            tier_data = tier_data.sort_values("fish", ascending=False)
+            
+            # Tier summary metrics
+            col1, col2, col3, col4, col5 = st.columns(5)
+            col1.metric("Min Fish", boundaries[tier]["min"])
+            col2.metric("Max Fish", boundaries[tier]["max"])
+            col3.metric("Total Catches", boundaries[tier]["count"])
+            col4.metric("Total Fish", f"{boundaries[tier]['total']:,}")
+            col5.metric("Avg per Catch", f"{boundaries[tier]['avg']:.1f}")
+            
+            # Top catches in this tier
+            st.markdown(f"#### 🏆 Top {tier.title()} Catches")
+            top_tier_catches = tier_data.head(20).copy()
+            top_tier_catches["time_formatted"] = top_tier_catches["time"].dt.strftime("%Y-%m-%d %H:%M")
+            top_tier_catches["rank"] = range(1, len(top_tier_catches) + 1)
+            
+            display_catches = top_tier_catches[["rank", "user", "fish", "time_formatted"]].copy()
+            display_catches.columns = ["Rank", "User", "Fish", "Time"]
+            st.dataframe(display_catches, use_container_width=True, hide_index=True)
+            
+            # User performance in this tier
+            tier_col1, tier_col2 = st.columns(2)
+            
+            with tier_col1:
+                st.markdown(f"#### 👥 User Performance in {tier.title()}")
+                user_tier_stats = tier_data.groupby("user").agg({
+                    "fish": ["sum", "count", "max", "mean"]
+                }).round(1)
+                user_tier_stats.columns = ["Total Fish", "Catches", "Best Catch", "Avg per Catch"]
+                user_tier_stats = user_tier_stats.sort_values("Total Fish", ascending=False)
+                st.dataframe(user_tier_stats, use_container_width=True)
+            
+            with tier_col2:
+                st.markdown(f"#### 📈 {tier.title()} Distribution")
+                fig_tier_dist = px.histogram(
+                    tier_data, 
+                    x="fish", 
+                    nbins=min(20, len(tier_data.fish.unique())),
+                    title=f"Fish Size Distribution for {tier.title()}",
+                    labels={"fish": "Fish Size", "count": "Frequency"},
+                    color_discrete_sequence=["#ff6b6b"]
+                )
+                fig_tier_dist.update_layout(height=300)
+                st.plotly_chart(fig_tier_dist, use_container_width=True)
+                
+                # Timeline for this tier
+                st.markdown(f"#### ⏱️ {tier.title()} Catches Over Time")
+                if not tier_data.empty:
+                    fig_tier_timeline = px.scatter(
+                        tier_data.sort_values("time"),
+                        x="time",
+                        y="fish",
+                        color="user",
+                        title=f"{tier.title()} Catches Timeline",
+                        hover_data=["user", "fish"],
+                        labels={"time": "Time", "fish": "Fish Size"}
+                    )
+                    fig_tier_timeline.update_layout(height=300)
+                    st.plotly_chart(fig_tier_timeline, use_container_width=True)
+
+
+def create_catches_timeline(df: pd.DataFrame):
+    """Create comprehensive timeline of all catches"""
+    st.markdown("## 📅 Complete Catches Timeline")
+    
+    # Timeline controls
+    timeline_col1, timeline_col2, timeline_col3 = st.columns(3)
+    
+    with timeline_col1:
+        # Date range filter
+        min_date = df["date"].min()
+        max_date = df["date"].max()
+        selected_dates = st.date_input(
+            "Select Date Range",
+            value=(min_date, max_date),
+            min_value=min_date,
+            max_value=max_date
+        )
+    
+    with timeline_col2:
+        # User filter
+        all_users = ["All"] + sorted(df["user"].unique().tolist())
+        selected_users = st.multiselect("Select Users", all_users, default=["All"])
+        if "All" in selected_users:
+            selected_users = df["user"].unique().tolist()
+    
+    with timeline_col3:
+        # Tier filter  
+        all_tiers = ["All"] + sorted(df["rarity"].unique().tolist())
+        selected_tiers = st.multiselect("Select Tiers", all_tiers, default=["All"])
+        if "All" in selected_tiers:
+            selected_tiers = df["rarity"].unique().tolist()
+    
+    # Apply filters
+    filtered_df = df.copy()
+    
+    # Date filter
+    if isinstance(selected_dates, (list, tuple)) and len(selected_dates) == 2:
+        start_date, end_date = selected_dates
+        filtered_df = filtered_df[(filtered_df["date"] >= start_date) & (filtered_df["date"] <= end_date)]
+    
+    # User and tier filters
+    filtered_df = filtered_df[
+        (filtered_df["user"].isin(selected_users)) & 
+        (filtered_df["rarity"].isin(selected_tiers))
+    ]
+    
+    if filtered_df.empty:
+        st.warning("No catches found with the selected filters.")
+        return
+    
+    # Timeline visualization options
+    viz_option = st.radio(
+        "Timeline View:",
+        ["Scatter Plot", "Bar Chart by Day", "Heatmap", "Detailed Table"],
+        horizontal=True
+    )
+    
+    if viz_option == "Scatter Plot":
+        # Interactive scatter plot timeline
+        fig_timeline = px.scatter(
+            filtered_df.sort_values("time"),
+            x="time",
+            y="fish",
+            color="rarity",
+            symbol="user",
+            size="fish",
+            hover_data=["user", "rarity", "fish"],
+            title="All Catches Timeline - Interactive Scatter Plot",
+            labels={"time": "Date & Time", "fish": "Fish Size"},
+            color_discrete_sequence=px.colors.qualitative.Set3
+        )
+        fig_timeline.update_layout(height=600)
+        st.plotly_chart(fig_timeline, use_container_width=True)
+        
+    elif viz_option == "Bar Chart by Day":
+        # Daily aggregation
+        daily_catches = filtered_df.groupby(["date", "rarity"]).agg({
+            "fish": "sum",
+            "user": "count"
+        }).reset_index()
+        daily_catches.columns = ["Date", "Rarity", "Total Fish", "Catches Count"]
+        
+        fig_daily = px.bar(
+            daily_catches,
+            x="Date",
+            y="Total Fish",
+            color="Rarity",
+            title="Daily Catches by Rarity",
+            labels={"Total Fish": "Total Fish Caught"},
+            color_discrete_sequence=px.colors.qualitative.Pastel
+        )
+        fig_daily.update_layout(height=500)
+        st.plotly_chart(fig_daily, use_container_width=True)
+        
+        # Show daily summary table
+        daily_summary = filtered_df.groupby("date").agg({
+            "fish": ["sum", "count", "max"],
+            "user": "nunique"
+        }).round(1)
+        daily_summary.columns = ["Total Fish", "Total Catches", "Biggest Catch", "Active Users"]
+        daily_summary = daily_summary.sort_index(ascending=False)
+        
+        st.markdown("#### 📊 Daily Summary")
+        st.dataframe(daily_summary.head(14), use_container_width=True)  # Show last 2 weeks
+        
+    elif viz_option == "Heatmap":
+        # Create hour vs day heatmap
+        heatmap_data = filtered_df.pivot_table(
+            index=filtered_df["time"].dt.day_name(),
+            columns=filtered_df["time"].dt.hour,
+            values="fish",
+            aggfunc="sum",
+            fill_value=0
+        )
+        
+        # Reorder weekdays
+        weekday_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        heatmap_data = heatmap_data.reindex([d for d in weekday_order if d in heatmap_data.index])
+        
+        fig_heatmap = px.imshow(
+            heatmap_data,
+            labels=dict(x="Hour of Day", y="Day of Week", color="Total Fish"),
+            color_continuous_scale="Viridis",
+            aspect="auto",
+            title="Fishing Activity Heatmap (Total Fish by Hour and Day)"
+        )
+        fig_heatmap.update_layout(height=400)
+        st.plotly_chart(fig_heatmap, use_container_width=True)
+        
+        # Additional heatmap - catches count
+        heatmap_count = filtered_df.pivot_table(
+            index=filtered_df["time"].dt.day_name(),
+            columns=filtered_df["time"].dt.hour,
+            values="fish",
+            aggfunc="count",
+            fill_value=0
+        )
+        heatmap_count = heatmap_count.reindex([d for d in weekday_order if d in heatmap_count.index])
+        
+        fig_heatmap_count = px.imshow(
+            heatmap_count,
+            labels=dict(x="Hour of Day", y="Day of Week", color="Number of Catches"),
+            color_continuous_scale="Plasma",
+            aspect="auto",
+            title="Fishing Activity Heatmap (Number of Catches by Hour and Day)"
+        )
+        fig_heatmap_count.update_layout(height=400)
+        st.plotly_chart(fig_heatmap_count, use_container_width=True)
+        
+    elif viz_option == "Detailed Table":
+        # Show detailed table with all catches
+        st.markdown("#### 🗂️ Detailed Catches Log")
+        
+        # Prepare detailed table
+        detailed_table = filtered_df.copy()
+        detailed_table["time_formatted"] = detailed_table["time"].dt.strftime("%Y-%m-%d %H:%M:%S")
+        detailed_table = detailed_table.sort_values("time", ascending=False)
+        
+        # Add rank within each tier
+        detailed_table["tier_rank"] = detailed_table.groupby("rarity")["fish"].rank(method="dense", ascending=False).astype(int)
+        
+        # Format for display
+        display_table = detailed_table[["user", "fish", "rarity", "time_formatted", "tier_rank"]].copy()
+        display_table.columns = ["User", "Fish", "Rarity", "Time", "Tier Rank"]
+        
+        # Pagination
+        page_size = 50
+        total_rows = len(display_table)
+        total_pages = (total_rows - 1) // page_size + 1
+        
+        page = st.selectbox("Page", range(1, total_pages + 1))
+        start_idx = (page - 1) * page_size
+        end_idx = start_idx + page_size
+        
+        st.write(f"Showing {start_idx + 1}-{min(end_idx, total_rows)} of {total_rows} catches")
+        st.dataframe(
+            display_table.iloc[start_idx:end_idx], 
+            use_container_width=True, 
+            hide_index=True
+        )
+    
+    # Timeline statistics
+    st.markdown("#### 📈 Timeline Statistics")
+    stats_col1, stats_col2, stats_col3, stats_col4 = st.columns(4)
+    
+    with stats_col1:
+        st.metric("Total Catches", len(filtered_df))
+        st.metric("Total Fish", f"{filtered_df['fish'].sum():,}")
+    
+    with stats_col2:
+        st.metric("Date Range", f"{len(filtered_df['date'].unique())} days")
+        st.metric("Active Users", filtered_df["user"].nunique())
+    
+    with stats_col3:
+        st.metric("Biggest Catch", filtered_df["fish"].max())
+        st.metric("Average Catch", f"{filtered_df['fish'].mean():.1f}")
+    
+    with stats_col4:
+        most_active_user = filtered_df["user"].value_counts().iloc[0]
+        most_active_count = filtered_df["user"].value_counts().index[0]
+        st.metric("Most Active User", most_active_count)
+        st.metric("Their Catches", most_active_user)
+
+
 def user_summary(df: pd.DataFrame, user: str):
     d = df[df["user"] == user]
     if d.empty:
@@ -196,6 +505,7 @@ def style():
     .metric {background: rgba(255,255,255,0.03); padding: 12px; border-radius: 10px}
     h1 {color: #ffd166}
     h2 {color: #ffa7a7}
+    .tier-panel {border: 2px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin: 10px 0;}
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
@@ -207,8 +517,8 @@ def main():
     df = load_data(data_path)
     style()
 
-    st.title("🎣 Fishing Dashboard — Community Stats")
-    st.markdown("A beautiful real-time dashboard summarizing catches.")
+    st.title("🎣 Enhanced Fishing Dashboard — Community Stats")
+    st.markdown("A comprehensive real-time dashboard with tier analysis and complete timeline.")
 
     if df is None or df.empty:
         st.info("No data to show. Make sure `fish_dictionary.json` is next to this script.")
@@ -221,9 +531,15 @@ def main():
         raw_data = json.load(f)
 
     # Sidebar controls
-    st.sidebar.header("⚙️ Controls")
+    st.sidebar.header("⚙️ Navigation")
+    page_option = st.sidebar.selectbox(
+        "Select Page",
+        ["📊 Overview", "🎯 Tier Analysis", "📅 Timeline", "👤 User Profile"]
+    )
+    
+    # Common filters
     user_list = sorted(df["user"].unique())
-    user_sel = st.sidebar.selectbox("Select user (or All)", ["All"] + user_list)
+    user_sel = st.sidebar.selectbox("Select user (for User Profile)", user_list)
     min_date = df["date"].min()
     max_date = df["date"].max()
     date_range = st.sidebar.date_input("Date range", value=(min_date, max_date), min_value=min_date, max_value=max_date)
@@ -236,8 +552,8 @@ def main():
     else:
         df_view = df
 
-    # Only show global overview when 'All' is selected
-    if user_sel == "All":
+    # PAGE ROUTING
+    if page_option == "📊 Overview":
         # Main metrics
         col1, col2, col3, col4 = st.columns(4)
         total_fishes = int(df_view["fish"].sum())
@@ -261,7 +577,7 @@ def main():
             lb.index = range(1, len(lb) + 1)
             st.table(lb)
 
-            # NEW: Activity Heatmap
+            # Activity Heatmap
             st.subheader("📅 Activity Heatmap")
             activity_pivot = df_view.pivot_table(
                 index=df_view["time"].dt.day_name(),
@@ -295,7 +611,7 @@ def main():
             fig.update_traces(textposition='inside', textinfo='percent+label')
             st.plotly_chart(fig, use_container_width=True)
 
-            # NEW: Best Fishing Hours
+            # Best Fishing Hours
             st.subheader("⏰ Best Fishing Hours")
             hourly = df_view.groupby("hour")["fish"].sum().reset_index()
             fig_hour = px.bar(
@@ -309,7 +625,7 @@ def main():
             fig_hour.update_layout(height=250, showlegend=False)
             st.plotly_chart(fig_hour, use_container_width=True)
 
-        # NEW: Timeline Analysis
+        # Timeline Analysis
         st.subheader("📈 Timeline Analysis")
         timeline_tab1, timeline_tab2, timeline_tab3 = st.tabs(["Daily", "Weekly", "Monthly"])
         
@@ -371,7 +687,7 @@ def main():
             fig_monthly.update_layout(height=400)
             st.plotly_chart(fig_monthly, use_container_width=True)
 
-        # FIXED: Per-tier percent leaders
+        # Per-tier percent leaders
         st.markdown("### 🎖️ Per-Tier Dominance Leaders")
         st.markdown("*Shows who owns the biggest percentage of each tier's total fish*")
         
@@ -410,121 +726,6 @@ def main():
             df_tpl = df_tpl.sort_values("Dominance", ascending=False)
             st.table(df_tpl)
 
-        # NEW: Interesting Statistics Section
-        st.markdown("### 🌟 Interesting Insights")
-        
-        insight_col1, insight_col2 = st.columns(2)
-        
-        with insight_col1:
-            # Lucky Strike Analysis
-            st.markdown("#### 🍀 Lucky Strike Analysis")
-            top_catches = df_view.nlargest(5, "fish")[["user", "fish", "rarity", "time"]]
-            top_catches["time"] = top_catches["time"].dt.strftime("%Y-%m-%d %H:%M")
-            top_catches.columns = ["User", "Fish", "Rarity", "Time"]
-            st.table(top_catches)
-            
-            # Consistency Champions
-            st.markdown("#### 📊 Most Consistent Fishers")
-            consistency_data = []
-            for user in df_view["user"].unique():
-                user_data = df_view[df_view["user"] == user]
-                if len(user_data) > 5:  # Only consider users with 5+ catches
-                    std_dev = user_data["fish"].std()
-                    avg = user_data["fish"].mean()
-                    cv = (std_dev / avg * 100) if avg > 0 else 0  # Coefficient of variation
-                    consistency_data.append({
-                        "User": user,
-                        "Avg Fish": f"{avg:.1f}",
-                        "Consistency": f"{100 - cv:.1f}%",
-                        "Catches": len(user_data)
-                    })
-            
-            if consistency_data:
-                consistency_df = pd.DataFrame(consistency_data).sort_values("Consistency", ascending=False).head(5)
-                st.table(consistency_df)
-        
-        with insight_col2:
-            # Time-based insights
-            st.markdown("#### ⏱️ Timing Patterns")
-            
-            # Most productive hour
-            best_hour = df_view.groupby("hour")["fish"].sum().idxmax()
-            best_hour_total = df_view.groupby("hour")["fish"].sum().max()
-            
-            # Most productive weekday
-            best_weekday = df_view.groupby("weekday")["fish"].sum().idxmax()
-            best_weekday_total = df_view.groupby("weekday")["fish"].sum().max()
-            
-            # Busiest day ever
-            busiest_day = df_view.groupby("date")["fish"].sum().idxmax()
-            busiest_day_amount = df_view.groupby("date")["fish"].sum().max()
-            
-            st.metric("🕐 Golden Hour", f"{best_hour}:00 ({best_hour_total:,} fish)")
-            st.metric("📅 Best Weekday", f"{best_weekday} ({best_weekday_total:,} fish)")
-            st.metric("🏅 Record Day", f"{busiest_day} ({busiest_day_amount:,} fish)")
-            
-            # Rarity luck distribution
-            st.markdown("#### 🎲 Rarity Distribution by User Count")
-            rarity_by_users = df_view.groupby("rarity")["user"].nunique().reset_index()
-            rarity_by_users.columns = ["Rarity", "Users Who Caught"]
-            st.table(rarity_by_users)
-
-        # NEW: Efficiency Rankings
-        st.markdown("### ⚡ Efficiency Rankings")
-        eff_col1, eff_col2, eff_col3 = st.columns(3)
-        
-        with eff_col1:
-            st.markdown("#### Fish per Catch")
-            eff_data = []
-            for user in df_view["user"].unique():
-                user_data = df_view[df_view["user"] == user]
-                if len(user_data) >= 5:  # Minimum 5 catches
-                    eff_data.append({
-                        "User": user,
-                        "Avg/Catch": user_data["fish"].mean(),
-                        "Catches": len(user_data)
-                    })
-            if eff_data:
-                eff_df = pd.DataFrame(eff_data).sort_values("Avg/Catch", ascending=False).head(5)
-                eff_df["Avg/Catch"] = eff_df["Avg/Catch"].apply(lambda x: f"{x:.1f}")
-                st.table(eff_df)
-        
-        with eff_col2:
-            st.markdown("#### Fish per Active Day")
-            daily_eff = []
-            for user in df_view["user"].unique():
-                user_data = df_view[df_view["user"] == user]
-                active_days = user_data["date"].nunique()
-                if active_days >= 3:  # Minimum 3 active days
-                    total_fish = user_data["fish"].sum()
-                    daily_eff.append({
-                        "User": user,
-                        "Fish/Day": total_fish / active_days,
-                        "Days": active_days
-                    })
-            if daily_eff:
-                daily_eff_df = pd.DataFrame(daily_eff).sort_values("Fish/Day", ascending=False).head(5)
-                daily_eff_df["Fish/Day"] = daily_eff_df["Fish/Day"].apply(lambda x: f"{x:.1f}")
-                st.table(daily_eff_df)
-        
-        with eff_col3:
-            st.markdown("#### Catch Frequency")
-            freq_data = []
-            for user in df_view["user"].unique():
-                user_data = df_view[df_view["user"] == user]
-                active_days = user_data["date"].nunique()
-                if active_days >= 3:
-                    catches = len(user_data)
-                    freq_data.append({
-                        "User": user,
-                        "Catches/Day": catches / active_days,
-                        "Total": catches
-                    })
-            if freq_data:
-                freq_df = pd.DataFrame(freq_data).sort_values("Catches/Day", ascending=False).head(5)
-                freq_df["Catches/Day"] = freq_df["Catches/Day"].apply(lambda x: f"{x:.2f}")
-                st.table(freq_df)
-
         # Trash trophies section
         st.markdown("### 🗑️ Trash Trophies — Community Collection")
         all_trash = Counter()
@@ -553,8 +754,13 @@ def main():
         else:
             st.write("No trash trophies found across users.")
 
-    # User-specific view
-    else:
+    elif page_option == "🎯 Tier Analysis":
+        create_tier_panels(df_view)
+    
+    elif page_option == "📅 Timeline":
+        create_catches_timeline(df_view)
+    
+    elif page_option == "👤 User Profile":
         us = user_summary(df_view, user_sel)
         st.markdown(f"## 👤 User Profile: **{user_sel}**")
         
@@ -772,6 +978,7 @@ def main():
     # Footer
     st.markdown("---")
     st.caption("Dashboard generated from `fish_dictionary.json`. Last updated: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    
-    
-main()
+
+
+if __name__ == "__main__":
+    main()
