@@ -539,7 +539,8 @@ def main():
     
     # Common filters
     user_list = sorted(df["user"].unique())
-    user_sel = st.sidebar.selectbox("Select user (for User Profile)", user_list)
+    if page_option == "👤 User Profile":
+        user_sel = st.sidebar.selectbox("Select user (for User Profile)", user_list)
     min_date = df["date"].min()
     max_date = df["date"].max()
     date_range = st.sidebar.date_input("Date range", value=(min_date, max_date), min_value=min_date, max_value=max_date)
