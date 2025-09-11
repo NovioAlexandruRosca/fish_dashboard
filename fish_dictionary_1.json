@@ -2,14 +2,19 @@
     "Ana Barosana": {
         "catches": [
             {
+                "fish": 23,
+                "rarity": "common",
+                "time": "2025-09-10T17:37:21.454000+00:00"
+            },
+            {
                 "fish": 2,
                 "rarity": "common",
                 "time": "2025-08-20T16:33:52.990000+00:00"
             }
         ],
-        "catches_made": 1,
-        "common": 1,
-        "fishes_caught": 2,
+        "catches_made": 2,
+        "common": 2,
+        "fishes_caught": 25,
         "legendary": 0,
         "rare": 0,
         "trash": 0,
@@ -18,6 +23,36 @@
     },
     "Ciimpii": {
         "catches": [
+            {
+                "fish": 533,
+                "rarity": "legendary",
+                "time": "2025-09-08T21:57:30.810000+00:00"
+            },
+            {
+                "fish": 7,
+                "rarity": "common",
+                "time": "2025-09-09T18:30:53.987000+00:00"
+            },
+            {
+                "fish": 13,
+                "rarity": "common",
+                "time": "2025-09-10T18:10:14.792000+00:00"
+            },
+            {
+                "fish": 13,
+                "rarity": "common",
+                "time": "2025-09-11T07:01:26.744000+00:00"
+            },
+            {
+                "fish": 55,
+                "rarity": "uncommon",
+                "time": "2025-09-11T10:59:00.195000+00:00"
+            },
+            {
+                "fish": 21,
+                "rarity": "common",
+                "time": "2025-09-11T13:07:27.242000+00:00"
+            },
             {
                 "fish": 4,
                 "rarity": "common",
@@ -79,10 +114,10 @@
                 "time": "2025-08-31T20:54:25.937000+00:00"
             }
         ],
-        "catches_made": 12,
-        "common": 6,
-        "fishes_caught": 649,
-        "legendary": 0,
+        "catches_made": 18,
+        "common": 10,
+        "fishes_caught": 1291,
+        "legendary": 1,
         "rare": 1,
         "trash": 3,
         "trash_collected": {
@@ -90,10 +125,85 @@
             "oil": 1,
             "paperclips": 1
         },
-        "uncommon": 2
+        "uncommon": 3
     },
     "Isabella <3": {
         "catches": [
+            {
+                "fish": 8,
+                "rarity": "common",
+                "time": "2025-09-08T21:14:21.194000+00:00"
+            },
+            {
+                "fish": 20,
+                "rarity": "common",
+                "time": "2025-09-09T04:44:02.558000+00:00"
+            },
+            {
+                "fish": 16,
+                "rarity": "common",
+                "time": "2025-09-09T08:51:18.610000+00:00"
+            },
+            {
+                "fish": 64,
+                "rarity": "uncommon",
+                "time": "2025-09-09T12:21:14.648000+00:00"
+            },
+            {
+                "fish": 29,
+                "rarity": "common",
+                "time": "2025-09-09T15:01:26.281000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-09T17:17:17.200000+00:00"
+            },
+            {
+                "fish": 28,
+                "rarity": "common",
+                "time": "2025-09-10T00:42:35.883000+00:00"
+            },
+            {
+                "fish": 3,
+                "rarity": "common",
+                "time": "2025-09-10T07:27:25.220000+00:00"
+            },
+            {
+                "fish": 15,
+                "rarity": "common",
+                "time": "2025-09-10T09:51:15.021000+00:00"
+            },
+            {
+                "fish": 7,
+                "rarity": "common",
+                "time": "2025-09-10T13:02:44.432000+00:00"
+            },
+            {
+                "fish": 14,
+                "rarity": "common",
+                "time": "2025-09-10T17:08:36.759000+00:00"
+            },
+            {
+                "fish": 19,
+                "rarity": "common",
+                "time": "2025-09-10T19:56:51.586000+00:00"
+            },
+            {
+                "fish": 26,
+                "rarity": "common",
+                "time": "2025-09-10T22:01:15.506000+00:00"
+            },
+            {
+                "fish": 19,
+                "rarity": "common",
+                "time": "2025-09-11T08:34:31.535000+00:00"
+            },
+            {
+                "fish": 23,
+                "rarity": "common",
+                "time": "2025-09-11T16:33:02.936000+00:00"
+            },
             {
                 "fish": 0,
                 "rarity": "trash",
@@ -575,24 +685,65 @@
                 "time": "2025-09-03T17:15:13.271000+00:00"
             }
         ],
-        "catches_made": 96,
-        "common": 53,
-        "fishes_caught": 5380,
+        "catches_made": 111,
+        "common": 66,
+        "fishes_caught": 5671,
         "legendary": 2,
         "rare": 9,
-        "trash": 6,
+        "trash": 7,
         "trash_collected": {
             "boot": 1,
             "fax": 1,
             "frame_photo": 1,
             "high_heel": 1,
             "movie_camera": 1,
+            "safety_pin": 1,
             "wrench": 1
         },
-        "uncommon": 26
+        "uncommon": 27
     },
     "Stefi": {
         "catches": [
+            {
+                "fish": 47,
+                "rarity": "uncommon",
+                "time": "2025-09-09T09:08:17.620000+00:00"
+            },
+            {
+                "fish": 21,
+                "rarity": "common",
+                "time": "2025-09-09T13:58:17.760000+00:00"
+            },
+            {
+                "fish": 58,
+                "rarity": "uncommon",
+                "time": "2025-09-09T17:17:36.811000+00:00"
+            },
+            {
+                "fish": 26,
+                "rarity": "common",
+                "time": "2025-09-09T22:22:32.756000+00:00"
+            },
+            {
+                "fish": 303,
+                "rarity": "rare",
+                "time": "2025-09-10T09:59:22.717000+00:00"
+            },
+            {
+                "fish": 97,
+                "rarity": "uncommon",
+                "time": "2025-09-10T13:08:21.397000+00:00"
+            },
+            {
+                "fish": 1,
+                "rarity": "common",
+                "time": "2025-09-10T21:09:01.143000+00:00"
+            },
+            {
+                "fish": 27,
+                "rarity": "common",
+                "time": "2025-09-11T14:14:50.549000+00:00"
+            },
             {
                 "fish": 39,
                 "rarity": "uncommon",
@@ -914,19 +1065,39 @@
                 "time": "2025-09-03T17:56:26.738000+00:00"
             }
         ],
-        "catches_made": 64,
-        "common": 37,
-        "fishes_caught": 3920,
+        "catches_made": 72,
+        "common": 41,
+        "fishes_caught": 4500,
         "legendary": 0,
-        "rare": 10,
+        "rare": 11,
         "trash": 1,
         "trash_collected": {
             "paperclips": 1
         },
-        "uncommon": 16
+        "uncommon": 19
     },
     "TonyCoxy": {
         "catches": [
+            {
+                "fish": 35,
+                "rarity": "uncommon",
+                "time": "2025-09-08T20:43:40.995000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-09T13:43:11.360000+00:00"
+            },
+            {
+                "fish": 20,
+                "rarity": "common",
+                "time": "2025-09-09T17:25:00.795000+00:00"
+            },
+            {
+                "fish": 79,
+                "rarity": "uncommon",
+                "time": "2025-09-10T19:57:08.288000+00:00"
+            },
             {
                 "fish": 24,
                 "rarity": "common",
@@ -1093,21 +1264,122 @@
                 "time": "2025-09-02T20:29:56.819000+00:00"
             }
         ],
-        "catches_made": 33,
-        "common": 19,
-        "fishes_caught": 1433,
+        "catches_made": 37,
+        "common": 20,
+        "fishes_caught": 1567,
         "legendary": 0,
         "rare": 3,
-        "trash": 3,
+        "trash": 4,
         "trash_collected": {
+            "amphora": 1,
             "crystal_ball": 1,
             "izakaya_lantern": 1,
             "telescope": 1
         },
-        "uncommon": 8
+        "uncommon": 10
     },
     "Tu Novio": {
         "catches": [
+            {
+                "fish": 73,
+                "rarity": "uncommon",
+                "time": "2025-09-08T20:50:47.657000+00:00"
+            },
+            {
+                "fish": 23,
+                "rarity": "common",
+                "time": "2025-09-09T06:50:51.073000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-09T09:09:33.112000+00:00"
+            },
+            {
+                "fish": 16,
+                "rarity": "common",
+                "time": "2025-09-09T12:46:09.556000+00:00"
+            },
+            {
+                "fish": 13,
+                "rarity": "common",
+                "time": "2025-09-09T14:46:17.742000+00:00"
+            },
+            {
+                "fish": 12,
+                "rarity": "common",
+                "time": "2025-09-09T16:56:29.380000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-09T18:56:44.838000+00:00"
+            },
+            {
+                "fish": 7,
+                "rarity": "common",
+                "time": "2025-09-09T21:21:53.568000+00:00"
+            },
+            {
+                "fish": 16,
+                "rarity": "common",
+                "time": "2025-09-09T23:21:57.877000+00:00"
+            },
+            {
+                "fish": 9,
+                "rarity": "common",
+                "time": "2025-09-10T06:56:19.694000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-10T09:50:14.605000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-10T12:36:15.637000+00:00"
+            },
+            {
+                "fish": 8,
+                "rarity": "common",
+                "time": "2025-09-10T14:47:46.841000+00:00"
+            },
+            {
+                "fish": 62,
+                "rarity": "uncommon",
+                "time": "2025-09-10T17:08:48.551000+00:00"
+            },
+            {
+                "fish": 98,
+                "rarity": "uncommon",
+                "time": "2025-09-10T19:12:13.484000+00:00"
+            },
+            {
+                "fish": 77,
+                "rarity": "uncommon",
+                "time": "2025-09-10T21:39:28.762000+00:00"
+            },
+            {
+                "fish": 87,
+                "rarity": "uncommon",
+                "time": "2025-09-11T06:47:41.215000+00:00"
+            },
+            {
+                "fish": 1,
+                "rarity": "common",
+                "time": "2025-09-11T10:59:09.756000+00:00"
+            },
+            {
+                "fish": 231,
+                "rarity": "rare",
+                "time": "2025-09-11T13:47:59.227000+00:00"
+            },
+            {
+                "fish": 7,
+                "rarity": "common",
+                "time": "2025-09-11T16:18:39.063000+00:00"
+            },
             {
                 "fish": 65,
                 "rarity": "uncommon",
@@ -1359,19 +1631,23 @@
                 "time": "2025-09-03T19:15:20.154000+00:00"
             }
         ],
-        "catches_made": 50,
-        "common": 32,
-        "fishes_caught": 2389,
+        "catches_made": 70,
+        "common": 42,
+        "fishes_caught": 3129,
         "legendary": 1,
-        "rare": 3,
-        "trash": 4,
+        "rare": 4,
+        "trash": 8,
         "trash_collected": {
+            "anchor": 1,
+            "fax": 1,
             "moyai": 1,
+            "oil": 1,
             "projector": 1,
             "saxophone": 1,
-            "stopwatch": 1
+            "stopwatch": 1,
+            "violin": 1
         },
-        "uncommon": 10
+        "uncommon": 15
     },
     "Tudor": {
         "catches": [
@@ -1392,6 +1668,111 @@
     },
     "bLaCkwEw": {
         "catches": [
+            {
+                "fish": 4,
+                "rarity": "common",
+                "time": "2025-09-08T21:19:43.520000+00:00"
+            },
+            {
+                "fish": 68,
+                "rarity": "uncommon",
+                "time": "2025-09-09T04:43:53.833000+00:00"
+            },
+            {
+                "fish": 26,
+                "rarity": "common",
+                "time": "2025-09-09T06:44:01.269000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-09T09:50:15.905000+00:00"
+            },
+            {
+                "fish": 4,
+                "rarity": "common",
+                "time": "2025-09-09T12:17:42.206000+00:00"
+            },
+            {
+                "fish": 28,
+                "rarity": "common",
+                "time": "2025-09-09T14:47:26.948000+00:00"
+            },
+            {
+                "fish": 19,
+                "rarity": "common",
+                "time": "2025-09-09T17:01:36.921000+00:00"
+            },
+            {
+                "fish": 8,
+                "rarity": "common",
+                "time": "2025-09-09T19:39:56.254000+00:00"
+            },
+            {
+                "fish": 4,
+                "rarity": "common",
+                "time": "2025-09-09T21:43:26.603000+00:00"
+            },
+            {
+                "fish": 25,
+                "rarity": "common",
+                "time": "2025-09-10T04:04:08.246000+00:00"
+            },
+            {
+                "fish": 14,
+                "rarity": "common",
+                "time": "2025-09-10T07:24:44.228000+00:00"
+            },
+            {
+                "fish": 12,
+                "rarity": "common",
+                "time": "2025-09-10T09:51:07.329000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-10T12:44:00.030000+00:00"
+            },
+            {
+                "fish": 11,
+                "rarity": "common",
+                "time": "2025-09-10T15:05:54.668000+00:00"
+            },
+            {
+                "fish": 16,
+                "rarity": "common",
+                "time": "2025-09-10T17:08:19.940000+00:00"
+            },
+            {
+                "fish": 13,
+                "rarity": "common",
+                "time": "2025-09-10T19:10:05.646000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-11T05:34:45.653000+00:00"
+            },
+            {
+                "fish": 112,
+                "rarity": "rare",
+                "time": "2025-09-11T08:34:19.067000+00:00"
+            },
+            {
+                "fish": 5,
+                "rarity": "common",
+                "time": "2025-09-11T11:06:40.932000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-11T14:12:51.464000+00:00"
+            },
+            {
+                "fish": 275,
+                "rarity": "rare",
+                "time": "2025-09-11T16:30:10.061000+00:00"
+            },
             {
                 "fish": 321,
                 "rarity": "rare",
@@ -2053,27 +2434,66 @@
                 "time": "2025-09-03T15:25:53.692000+00:00"
             }
         ],
-        "catches_made": 132,
-        "common": 84,
-        "fishes_caught": 6848,
+        "catches_made": 153,
+        "common": 98,
+        "fishes_caught": 7492,
         "legendary": 2,
-        "rare": 12,
-        "trash": 9,
+        "rare": 14,
+        "trash": 13,
         "trash_collected": {
+            "alarm_clock": 1,
             "coffin": 1,
             "fax": 1,
             "gear": 1,
+            "izakaya_lantern": 1,
+            "magnet": 1,
             "plunger": 1,
             "prayer_beads": 1,
             "saxophone": 1,
             "scissors": 1,
             "screwdriver": 1,
-            "stopwatch": 1
+            "stopwatch": 1,
+            "wrench": 1
         },
-        "uncommon": 25
+        "uncommon": 26
     },
     "honeygpot": {
         "catches": [
+            {
+                "fish": 23,
+                "rarity": "common",
+                "time": "2025-09-08T20:42:18.212000+00:00"
+            },
+            {
+                "fish": 29,
+                "rarity": "common",
+                "time": "2025-09-09T18:57:02.928000+00:00"
+            },
+            {
+                "fish": 58,
+                "rarity": "uncommon",
+                "time": "2025-09-10T08:34:12.074000+00:00"
+            },
+            {
+                "fish": 26,
+                "rarity": "common",
+                "time": "2025-09-10T12:37:04.777000+00:00"
+            },
+            {
+                "fish": 0,
+                "rarity": "trash",
+                "time": "2025-09-10T17:08:33.964000+00:00"
+            },
+            {
+                "fish": 61,
+                "rarity": "uncommon",
+                "time": "2025-09-11T10:59:31.996000+00:00"
+            },
+            {
+                "fish": 83,
+                "rarity": "uncommon",
+                "time": "2025-09-11T14:13:14.534000+00:00"
+            },
             {
                 "fish": 25,
                 "rarity": "common",
@@ -2415,24 +2835,60 @@
                 "time": "2025-09-03T18:01:22.820000+00:00"
             }
         ],
-        "catches_made": 68,
-        "common": 49,
-        "fishes_caught": 2689,
+        "catches_made": 75,
+        "common": 52,
+        "fishes_caught": 2969,
         "legendary": 1,
         "rare": 4,
-        "trash": 6,
+        "trash": 7,
         "trash_collected": {
             "alarm_clock": 1,
             "coffin": 1,
             "frame_photo": 1,
             "newspaper2": 1,
             "screwdriver": 1,
-            "teddy_bear": 1
+            "teddy_bear": 1,
+            "urn": 1
         },
-        "uncommon": 8
+        "uncommon": 11
     },
     "sara0": {
         "catches": [
+            {
+                "fish": 1,
+                "rarity": "common",
+                "time": "2025-09-08T20:42:03.860000+00:00"
+            },
+            {
+                "fish": 18,
+                "rarity": "common",
+                "time": "2025-09-09T17:03:36.621000+00:00"
+            },
+            {
+                "fish": 551,
+                "rarity": "legendary",
+                "time": "2025-09-10T08:26:58.514000+00:00"
+            },
+            {
+                "fish": 21,
+                "rarity": "common",
+                "time": "2025-09-10T10:34:00.863000+00:00"
+            },
+            {
+                "fish": 16,
+                "rarity": "common",
+                "time": "2025-09-10T19:12:55.465000+00:00"
+            },
+            {
+                "fish": 87,
+                "rarity": "uncommon",
+                "time": "2025-09-10T21:15:29.927000+00:00"
+            },
+            {
+                "fish": 27,
+                "rarity": "common",
+                "time": "2025-09-11T15:10:46.119000+00:00"
+            },
             {
                 "fish": 97,
                 "rarity": "uncommon",
@@ -2774,10 +3230,10 @@
                 "time": "2025-09-03T15:50:25.659000+00:00"
             }
         ],
-        "catches_made": 68,
-        "common": 41,
-        "fishes_caught": 3994,
-        "legendary": 1,
+        "catches_made": 75,
+        "common": 46,
+        "fishes_caught": 4715,
+        "legendary": 2,
         "rare": 8,
         "trash": 5,
         "trash_collected": {
@@ -2786,6 +3242,6 @@
             "safety_pin": 1,
             "toilet": 1
         },
-        "uncommon": 13
+        "uncommon": 14
     }
 }
